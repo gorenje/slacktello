@@ -22,31 +22,36 @@ post '/slack/commands' do
     if crdtxt =~ /^[[:space:]]*board:(\w+|['"][^'"]+['"])[[:space:]]+(.+)$/
       brdname, crdtext = $1, $2
       brdname = brdname.gsub(/["']/,'')
-      brd = Trello::Board.all.select { |b| b.name == brdname }.first
-      brd = Trello::Board.all.
-        select { |b| b.name =~ /#{brdname}/i }.first if brd.nil?
+      brd = Trello::Board.all.select { |b| b.name == brdname }.first ||
+              Trello::Board.all.select { |b| b.name =~ /#{brdname}/i }.first
       return "Unable to find board for boardname *#{brdname}*" if brd.nil?
     end
 
-    brdname = ENV["board.name.#{chnl}"] || chnl
-
-    brd = Trello::Board.all.select { |b| b.name == brdname }.first ||
-      Trello::Board.all.select { |b| b.name =~ /#{brdname} board/i }.first ||
-      Trello::Board.all.select { |b| b.name =~ /#{brdname}/i }.first
-    return "Unable to find board for channel *#{chnl}*" if brd.nil?
+    if brd.nil?
+      brdname = ENV["board.name.#{chnl}"] || chnl
+      brd = Trello::Board.all.select { |b| b.name == brdname }.first ||
+        Trello::Board.all.select { |b| b.name =~ /#{brdname} board/i }.first ||
+        Trello::Board.all.select { |b| b.name =~ /#{brdname}/i }.first
+      return "Unable to find board for channel *#{chnl}*" if brd.nil?
+    end
 
     # obtain the list only via the ENV
     list = ENV["board.list.#{chnl}"] || "To Do"
 
-    lst = brd.lists.select { |a| a.name == list }.first
-    lst = Trello::List.create(:name => "To Do", :board_id=> brd.id) if lst.nil?
+    lst = brd.lists.select { |a| a.name == list }.first ||
+            Trello::List.create(:name => "To Do", :board_id => brd.id)
     return "Unable to find or create list: *#{list}*" if lst.nil?
 
     return "No Text given, nothing done." if crdtxt.blank?
     card = Trello::Card.create(:name => crdtxt, :list_id => lst.id,
-                            :desc => "Created by SlackTello")
+                               :desc => "Created by SlackTello")
 
-    card ? "Created new <#{card.url}|card> on *<#{brd.url}|#{brd.name}>*" : "Card not created"
+    if card
+      "Created new <#{card.url}|card> on *<#{brd.url}|#{brd.name}>*"
+    else
+      "Card not created"
+    end
+
   else
     "I dunno whatcha talking about Willis? "+
       "Command Unknown: #{params[:commamnd]}"
