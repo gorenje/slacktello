@@ -8,6 +8,11 @@ post '/slack/commands' do
       return "Trello keys not setup for *#{username}*"
     end
 
+    Trello.configure do |cfg|
+      cfg.member_token         = token
+      cfg.developer_public_key = dev_key
+    end
+
     # obtain the board either via the text or via a mapping
     chnl   = params[:channel_name]
     crdtxt = params[:text]
@@ -27,11 +32,6 @@ post '/slack/commands' do
 
     # obtain the list only via the ENV
     list = ENV["board.list.#{chnl}"] || "To Do"
-
-    Trello.configure do |cfg|
-      cfg.member_token         = token
-      cfg.developer_public_key = dev_key
-    end
 
     lst = brd.lists.select { |a| a.name == list }.first
     lst = Trello::List.create(:name => "To Do", :board_id=> brd.id) if lst.nil?
