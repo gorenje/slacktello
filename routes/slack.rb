@@ -41,7 +41,7 @@ post '/slack/commands' do
     card = Trello::Card.create(:name => params[:text], :list_id => lst.id,
                             :desc => "Created by SlackTello")
 
-    card ? "New <#{r.url}|Card> created." : "Card not created"
+    card ? "New <#{card.url}|Card> created." : "Card not created"
   else
     "I dunno whatcha talking about Willis? "+
       "Command Unknown: #{params[:commamnd]}"
