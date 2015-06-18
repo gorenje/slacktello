@@ -13,7 +13,8 @@ post '/slack/commands' do
       cfg.developer_public_key = dev_key
     end
 
-    # obtain the board either via the text or via a mapping
+    # obtain the board either via the text or via a mapping or
+    # via channel name.
     chnl   = params[:channel_name]
     crdtxt = params[:text]
     brd    = nil
@@ -24,10 +25,14 @@ post '/slack/commands' do
       brd = Trello::Board.all.select { |b| b.name == brdname }.first
       brd = Trello::Board.all.
         select { |b| b.name =~ /#{brdname}/i }.first if brd.nil?
+      return "Unable to find board for boardname *#{brdname}*" if brd.nil?
     end
 
-    brd = Trello::Board.all.
-      select { |b| b.name =~ /#{chnl}/i }.first if brd.nil?
+    brdname = ENV["board.name.#{chnl}"] || chnl
+
+    brd = Trello::Board.all.select { |b| b.name == brdname }.first ||
+      Trello::Board.all.select { |b| b.name =~ /#{brdname} board/i }.first ||
+      Trello::Board.all.select { |b| b.name =~ /#{brdname}/i }.first
     return "Unable to find board for channel *#{chnl}*" if brd.nil?
 
     # obtain the list only via the ENV
@@ -38,10 +43,10 @@ post '/slack/commands' do
     return "Unable to find or create list: *#{list}*" if lst.nil?
 
     return "No Text given, nothing done." if crdtxt.blank?
-    card = Trello::Card.create(:name => params[:text], :list_id => lst.id,
+    card = Trello::Card.create(:name => crdtxt, :list_id => lst.id,
                             :desc => "Created by SlackTello")
 
-    card ? "New <#{card.url}|Card> created." : "Card not created"
+    card ? "Created new <#{card.url}|card> on *<#{brd.url}|#{brd.name}>*" : "Card not created"
   else
     "I dunno whatcha talking about Willis? "+
       "Command Unknown: #{params[:commamnd]}"
