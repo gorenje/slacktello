@@ -43,27 +43,31 @@ post '/slack/commands' do
     return "Unable to find or create list: *#{list}*" if lst.nil?
 
     return "No Text given, nothing done." if crdtxt.blank?
-    card = Trello::Card.create(:name => crdtxt, :list_id => lst.id,
-                               :desc => "Created by SlackTello")
 
-    if card
-      unless ENV['SLACK_INCOMING_URL'].blank?
-        options = {
-          :icon_emoji => ':slacktello:',
-          :username   => 'SlackTello',
-          :channel    => "##{chnl}",
-        }
-        poster = Slack::Poster.new(ENV['SLACK_INCOMING_URL'], options)
-        msg = ["<https://wooga.slack.com/messages/@#{username}|@#{username}>",
-               " just created *<#{card.url}|#{crdtxt}>* on the board ",
-               "*<#{brd.url}|#{brd.name}>*"].join
-        poster.send_message(msg)
+    begin
+      card = Trello::Card.create(:name => crdtxt, :list_id => lst.id,
+                                 :desc => "Created by SlackTello")
+
+      if card
+        unless ENV['SLACK_INCOMING_URL'].blank?
+          options = {
+            :icon_emoji => ':slacktello:',
+            :username   => 'SlackTello',
+            :channel    => "##{chnl}",
+          }
+          poster = Slack::Poster.new(ENV['SLACK_INCOMING_URL'], options)
+          msg = ["<https://wooga.slack.com/messages/@#{username}|@#{username}>",
+                 " just created *<#{card.url}|#{crdtxt}>* on the board ",
+                 "*<#{brd.url}|#{brd.name}>*"].join
+          poster.send_message(msg)
+        end
+        "Created new <#{card.url}|card> on *<#{brd.url}|#{brd.name}>*"
+      else
+        "Sorry, card could not be created."
       end
-      "Created new <#{card.url}|card> on *<#{brd.url}|#{brd.name}>*"
-    else
-      "Card not created"
+    rescue Exception => e
+      "Sorry, Trello errored out: #{e.message}"
     end
-
   else
     "I dunno whatcha talking about Willis? "+
       "Command Unknown: #{params[:commamnd]}"
