@@ -107,7 +107,7 @@ the application and you can use that as endpoint for your slack command, e.g.:
 
 Important is to use the ```slack/commands``` path on the URL.
 
-[![Deploy To Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/wooga/slacktello)
+[![Deploy To Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 Thanks
 ===
