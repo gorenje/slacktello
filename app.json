@@ -11,7 +11,8 @@
   "logo": "http://cdn-mkt.wooga.com/logo/wooga-logo-w.png",
   "env": {
     "SLACK_TOKENS": {
-      "description": "Comma separated list of slack command tokens."
+      "description": "Comma separated list of slack command tokens.",
+      "required": false
     },
     "SLACK_INCOMING_URL": {
       "description": "(Optional) URL to use to post messages into channels.",
