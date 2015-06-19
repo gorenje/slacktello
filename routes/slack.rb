@@ -47,6 +47,18 @@ post '/slack/commands' do
                                :desc => "Created by SlackTello")
 
     if card
+      unless ENV['SLACK_INCOMING_URL'].blank?
+        options = {
+          :icon_emoji => ':slacktello:',
+          :username   => 'SlackTello',
+          :channel    => "##{chnl}",
+        }
+        poster = Slack::Poster.new(ENV['SLACK_INCOMING_URL'], options)
+        msg = ["<https://wooga.slack.com/messages/@#{username}|@#{username}>",
+               " just created *<#{card.url}|#{crdtxt}>* on the board ",
+               "*<#{brd.url}|#{brd.name}>*"].join
+        poster.send_message(msg)
+      end
       "Created new <#{card.url}|card> on *<#{brd.url}|#{brd.name}>*"
     else
       "Card not created"

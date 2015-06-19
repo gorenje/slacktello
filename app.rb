@@ -4,6 +4,7 @@ require 'sinatra'
 require 'json'
 
 require 'trello'
+require 'slack-poster'
 
 ENV['environment'] = ENV['RACK_ENV'] || 'development'
 
