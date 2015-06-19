@@ -1,5 +1,5 @@
 {
-  "name" : "SlackTello create Trello cards from Slack",
+  "name" : "SlackTello: /trello for Slack",
   "description": "Create trello cards from slack using a slack command",
   "keywords": [
     "productivity",
