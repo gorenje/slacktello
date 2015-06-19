@@ -1,16 +1,16 @@
 SlackTello
----
+===
 
-Bridge between Slack and Trello to create cards from slack commands.
+Heroku bridge between Slack and Trello to create cards from slack commands.
 
 Configuration
----
+===
 
-Designed to be deployed to heroku but just needs the following setup:
+Designed to be deployed to heroku and just needs the following setup:
 
     SLACK_TOKENS=token,token2,...
 
-comma list of slack tokens generated when creating a new slack command.
+comma list of slack tokens generated when [creating a new slack command](https://slack.zendesk.com/hc/en-us/articles/201259356-Using-slash-commands).
 
 Now it gets complicated! For each slack user, need to create a variable
 containing their trello keys:
@@ -18,7 +18,8 @@ containing their trello keys:
     trello.keys.<slack user name>=<token>,<dev key>
 
 Each trello user can obtain their key and token from [trello](http://www.trello.org/help.html). Their slack user name can be found out by trying out the
-command '/trello' in slack - it will echo back with your slack username.
+command '/trello' in slack - it will echo back with your slack username (if
+the [slack command](https://slack.zendesk.com/hc/en-us/articles/201259356-Using-slash-commands) was already created).
 
 In the end, you'll need a URL that looks like this:
 
@@ -29,7 +30,8 @@ won't be able to create cards but only read them.
 
 Why do this?
 
-Because cards are created in a users name, so they get the correct creator.
+Because cards are created in a users name, so cards are created with the
+correct creator.
 
 Board Name
 ---
@@ -78,3 +80,38 @@ it's created. The list name can be overridden by setting the following:
     board.list.<channel name>=Some List Name
 
 Note: this only works with the channel name, nothing else.
+
+Post Back
+---
+
+Normally the output of trello command is echo'ed just to the user who created
+the card and not posted in the channel from which they created the card.
+
+You can change this behaviour and get a message posted in the channel by
+adding the following environment variable:
+
+    SLACK_INCOMING_URL=<slack url>
+
+You obtain the url [from slack](https://api.slack.com/incoming-webhooks). Note this url is bound to a channel
+but can be used for any channel and slacktello will override the default
+channel with the one from which the card was created.
+
+Thanks
+===
+
+Thanks to the developers of the [ruby-trello](https://rubygems.org/gems/ruby-trello) gem and to the developers of [slack-poster](https://rubygems.org/gems/slack-poster) - made developing slacktello too easy!
+
+License
+===
+
+Released under the GPLv2.
+
+See https://www.gnu.org/licenses/gpl-2.0 for details.
+
+Contributing to SlackTello
+===
+
+* fork the project
+* start a feature branch
+* make sure to add tests
+* please try not to mess with the Rakefile, version, or history
