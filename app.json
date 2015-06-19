@@ -1,0 +1,25 @@
+{
+  "name" : "SlackTello create Trello cards from Slack",
+  "description": "Create trello cards from slack using a slack command",
+  "keywords": [
+    "productivity",
+    "slack",
+    "trello"
+  ],
+  "website": "https://github.com/wooga/slacktello/blob/master/README.md",
+  "repository": "https://github.com/wooga/slacktello",
+  "logo": "http://cdn-mkt.wooga.com/logo/wooga-logo-w.png",
+  "env": {
+    "SLACK_TOKENS": {
+      "description": "Comma separated list of slack command tokens."
+    },
+    "SLACK_INCOMING_URL": {
+      "description": "(Optional) URL to use to post messages into channels.",
+      "required": false
+    },
+    "RACK_ENV": {
+      "description": "Rack environment",
+      "value": "production"
+    }
+  }
+}

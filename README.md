@@ -96,6 +96,19 @@ You obtain the url [from slack](https://api.slack.com/incoming-webhooks). Note t
 but can be used for any channel and slacktello will override the default
 channel with the one from which the card was created.
 
+Heroku
+===
+
+Host this on heroku is a matter of creating an [application](https://www.heroku.com/features) at Heroku and
+pushing this code to that application. You'll have a heroku URL to access
+the application and you can use that as endpoint for your slack command, e.g.:
+
+    https://slacktello.herokuapp.com/slack/commands
+
+Important is to use the ```slack/commands``` path on the URL.
+
+
+
 Thanks
 ===
 
