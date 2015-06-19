@@ -20,7 +20,7 @@ post '/slack/commands' do
     brd    = nil
 
     if crdtxt =~ /^[[:space:]]*board:(\w+|['"][^'"]+['"])[[:space:]]+(.+)$/
-      brdname, crdtext = $1, $2
+      brdname, crdtxt = $1, $2
       brdname = brdname.gsub(/["']/,'')
       brd = Trello::Board.all.select { |b| b.name == brdname }.first ||
               Trello::Board.all.select { |b| b.name =~ /#{brdname}/i }.first
