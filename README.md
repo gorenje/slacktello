@@ -20,6 +20,13 @@ containing their trello keys:
 Each trello user can obtain their key and token from [trello](http://www.trello.org/help.html). Their slack user name can be found out by trying out the
 command '/trello' in slack - it will echo back with your slack username.
 
+In the end, you'll need a URL that looks like this:
+
+    https://trello.com/1/authorize?key=substitute_with_your_application_key&name=My+Application&expiration=never&response_type=token&scope=read,write
+
+Important here is the ```scope``` value of ```read,write``` otherwise you
+won't be able to create cards but only read them.
+
 Why do this?
 
 Because cards are created in a users name, so they get the correct creator.
