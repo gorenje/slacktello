@@ -22,8 +22,9 @@ post '/slack/commands' do
     if crdtxt =~ /^[[:space:]]*board:(\w+|['"][^'"]+['"])[[:space:]]+(.+)$/
       brdname, crdtxt = $1, $2
       brdname = brdname.gsub(/["']/,'')
-      brd = Trello::Board.all.select { |b| b.name == brdname }.first ||
-              Trello::Board.all.select { |b| b.name =~ /#{brdname}/i }.first
+      brd = (Trello::Board.all.select { |b| b.name == brdname }.first ||
+             Trello::Board.all.select { |b| b.name =~ /#{brdname}/i }.first ||
+             ENV["board.name.#{brdnamel}"])
       return "Unable to find board for boardname *#{brdname}*" if brd.nil?
     end
 
