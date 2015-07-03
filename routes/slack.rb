@@ -24,7 +24,7 @@ post '/slack/commands' do
       brdname = brdname.gsub(/["']/,'')
       brd = (Trello::Board.all.select { |b| b.name == brdname }.first ||
              Trello::Board.all.select { |b| b.name =~ /#{brdname}/i }.first ||
-             ENV["board.name.#{brdnamel}"])
+             ENV["board.name.#{brdname}"])
       return "Unable to find board for boardname *#{brdname}*" if brd.nil?
     end
 
