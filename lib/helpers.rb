@@ -4,6 +4,19 @@ module SlackTello
       ENV["trello.keys.#{username}"] || ENV["trello_keys_#{username}"] || ""
     end
 
+    def all_trello_users
+      users = ENV.keys.
+        select { |a| a =~ /trello[._]keys[._]/ }.
+        map { |k| k.gsub(/trello[._]keys[._]/,'') }
+
+      msg = users.include?(params[:user_name]) ? " " : " *not* "
+
+      "Your username *#{params[:user_name]}* has#{msg}been configured. "+
+        "Following users have:\n" +
+        users.map { |a| "*<https://wooga.slack.com/messages/@#{a}|@#{a}>*"}.
+        join(",") + "\n"
+    end
+
     def configure_trello(username)
       token,dev_key = trello_key_for(username).split(/,/)
 

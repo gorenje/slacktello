@@ -3,6 +3,7 @@ route :get, :post, '/slack/commands' do
   when '/trello'
     opts = SlackTello::OptionParser.new.parse(params[:text])
     return opts.help if opts.is_in_error?
+    return all_trello_users if opts.show_users?
 
     result = configure_trello(params[:user_name])
     return result unless result.nil?
