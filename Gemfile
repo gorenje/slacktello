@@ -13,3 +13,10 @@ group :development do
   gem 'rake'
   gem 'foreman'
 end
+
+group :test do
+  gem 'minitest'
+  gem 'shoulda'
+  gem 'mocha'
+  gem 'fakeweb'
+end
