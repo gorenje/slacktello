@@ -1,7 +1,6 @@
-desc "Start a pry shell and load all gems"
-task :shell do
+Dir[File.join(File.dirname(__FILE__),'lib','tasks','*.rake')].each {|f| load f}
+
+task :default => :test
+task :environment do
   require_relative 'app.rb'
-  require 'pry'
-  Pry.editor = "emacs"
-  Pry.start
 end
