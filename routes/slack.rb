@@ -42,6 +42,6 @@ route :get, :post, '/slack/commands' do
     end
   else
     "I dunno whatcha talking about Willis? "+
-      "Command Unknown: #{params[:commamnd]}"
+      "Command Unknown: #{params[:command]}"
   end
 end
