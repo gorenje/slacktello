@@ -23,10 +23,13 @@ the [slack command](https://slack.zendesk.com/hc/en-us/articles/201259356-Using-
 
 In the end, you'll need a URL that looks like this:
 
-    https://trello.com/1/authorize?key=substitute_with_your_application_key&name=My+Application&expiration=never&response_type=token&scope=read,write
+    https://trello.com/1/authorize?key=substitute_with_your_application_key&name=Slacktello&expiration=never&response_type=token&scope=read,write
 
 Important here is the ```scope``` value of ```read,write``` otherwise you
 won't be able to create cards but only read them.
+
+The token that is shown on the page because the secret in the above
+configuration.
 
 Why do this?
 
