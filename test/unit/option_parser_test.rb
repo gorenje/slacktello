@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require_relative "../test_helper"
 
 class OptionParserTest < Minitest::Test
@@ -34,6 +35,19 @@ class OptionParserTest < Minitest::Test
         opts = SlackTello::OptionParser.new.parse(cmdline)
         assert !opts.is_in_error?, failure_msg
         assert_equal 'board name', opts.board, failure_msg
+        assert_equal 'card text', opts.text, failure_msg
+        assert !opts.which_board
+      end
+    end
+
+    should "support german quote characters" do
+      ["-b “board name” -l “list name” card text"
+      ].each do |cmdline|
+        failure_msg = "Failed for #{cmdline}"
+        opts = SlackTello::OptionParser.new.parse(cmdline)
+        assert !opts.is_in_error?, failure_msg
+        assert_equal 'board name', opts.board, failure_msg
+        assert_equal 'list name', opts.list, failure_msg
         assert_equal 'card text', opts.text, failure_msg
         assert !opts.which_board
       end
