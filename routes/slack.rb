@@ -11,7 +11,7 @@ route :get, :post, '/slack/commands' do
     chnl = params[:channel_name]
 
     if opts.which_board
-      brd = find_trell_board_for_channel(opts.board, chnl)
+      brd = find_trello_board_for_channel(opts.board, chnl)
       if brd
         "This would go into the Board: *<#{brd.url}|#{brd.name}>*"
       else
@@ -21,7 +21,7 @@ route :get, :post, '/slack/commands' do
       return "No Text given, nothing done." if opts.text.blank?
 
       brd = begin
-              find_trell_board_for_channel(opts.board, chnl)
+              find_trello_board_for_channel(opts.board, chnl)
             rescue Trello::Error
               cfg = Trello.configuration
               link = trello_authorize_link(cfg.developer_public_key)

@@ -36,7 +36,7 @@ module SlackTello
       nil
     end
 
-    def find_trell_board_for_channel(brdname, chnl)
+    def find_trello_board_for_channel(brdname, chnl)
       [brdname,
        ENV["board.name.#{brdname}"],
        ENV["board.name.#{chnl}"],
