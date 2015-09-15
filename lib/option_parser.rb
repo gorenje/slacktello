@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'optparse'
 require 'shellwords'
 
@@ -42,7 +43,10 @@ module SlackTello
       end
 
       begin
-        @text = @opts.parse!(Shellwords.shellwords(str)).join(" ")
+        # german quotes need replacing, not supported by shellwords.
+        @text = @opts.
+          parse!(Shellwords.shellwords(str.gsub(/“/,'"').gsub(/”/,'"'))).
+          join(" ")
       rescue Exception => e
         @error_message = e.message
       end
