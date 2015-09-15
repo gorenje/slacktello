@@ -17,6 +17,11 @@ module SlackTello
         join(",") + "\n"
     end
 
+    def trello_authorize_link(dev_key)
+      "https://trello.com/1/authorize?key=#{dev_key}&name="+
+        "Slacktello&expiration=never&response_type=token&scope=read,write"
+    end
+
     def configure_trello(username)
       token,dev_key = trello_key_for(username).split(/,/)
 

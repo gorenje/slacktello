@@ -20,7 +20,14 @@ route :get, :post, '/slack/commands' do
     else
       return "No Text given, nothing done." if opts.text.blank?
 
-      brd = find_trell_board_for_channel(opts.board, chnl)
+      brd = begin
+              find_trell_board_for_channel(opts.board, chnl)
+            rescue Trello::Error
+              cfg = Trello.configuration
+              link = trello_authorize_link(cfg.developer_public_key)
+              return ("You are using the wrong token, "+
+                      "please <#{link}|click here> and use that token")
+            end
       return "No board found for Channel #{chnl}" if brd.nil?
 
       list = opts.list || ENV["board.list.#{chnl}"] || "To Do"
