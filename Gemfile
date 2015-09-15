@@ -12,6 +12,7 @@ group :development do
   gem 'pry'
   gem 'rake'
   gem 'foreman'
+  gem 'dotenv'
 end
 
 group :test do
